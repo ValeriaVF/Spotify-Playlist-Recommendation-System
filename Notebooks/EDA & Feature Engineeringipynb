@@ -1,0 +1,955 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Next Steps\n",
+    "\n",
+    "Compare to Valance & Arousal, maybe present cluster info v V&A plane as it relates to mood? How do I do this lol"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Read dataset\n",
+    "df = pd.read_csv(\"../data/song_properties_dataset.csv\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Exploratory Data Analysis"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>id</th>\n",
+       "      <th>genre</th>\n",
+       "      <th>track_name</th>\n",
+       "      <th>artist_name</th>\n",
+       "      <th>danceability</th>\n",
+       "      <th>valence</th>\n",
+       "      <th>energy</th>\n",
+       "      <th>tempo</th>\n",
+       "      <th>loudness</th>\n",
+       "      <th>speechiness</th>\n",
+       "      <th>instrumentalness</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>6wN5nWLgjEGmPwozDh2jwM</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Kiss Me</td>\n",
+       "      <td>Jason Walker</td>\n",
+       "      <td>0.429</td>\n",
+       "      <td>0.330</td>\n",
+       "      <td>0.184</td>\n",
+       "      <td>77.567</td>\n",
+       "      <td>-9.731</td>\n",
+       "      <td>0.0299</td>\n",
+       "      <td>0.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>5z1vCywwTJAP8qSkGJymFY</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Creep - Live</td>\n",
+       "      <td>Korn</td>\n",
+       "      <td>0.484</td>\n",
+       "      <td>0.236</td>\n",
+       "      <td>0.534</td>\n",
+       "      <td>104.023</td>\n",
+       "      <td>-8.156</td>\n",
+       "      <td>0.1510</td>\n",
+       "      <td>0.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1ZmbLKxfrWh2ejFjiZxZPW</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Better Off - Live From Spotify London</td>\n",
+       "      <td>HAIM</td>\n",
+       "      <td>0.510</td>\n",
+       "      <td>0.419</td>\n",
+       "      <td>0.702</td>\n",
+       "      <td>119.296</td>\n",
+       "      <td>-10.475</td>\n",
+       "      <td>0.0296</td>\n",
+       "      <td>0.003800</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>7noCkklUhEAoj8GJkbAuHq</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>All of Me</td>\n",
+       "      <td>Boyce Avenue</td>\n",
+       "      <td>0.606</td>\n",
+       "      <td>0.308</td>\n",
+       "      <td>0.209</td>\n",
+       "      <td>125.969</td>\n",
+       "      <td>-10.273</td>\n",
+       "      <td>0.0418</td>\n",
+       "      <td>0.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>6wDKGtbPpF9xPMRv7bswQN</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Dead Sea</td>\n",
+       "      <td>The Lumineers</td>\n",
+       "      <td>0.713</td>\n",
+       "      <td>0.472</td>\n",
+       "      <td>0.319</td>\n",
+       "      <td>94.043</td>\n",
+       "      <td>-11.077</td>\n",
+       "      <td>0.0289</td>\n",
+       "      <td>0.000079</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>5</th>\n",
+       "      <td>7nnWIPM5hwE3DaUBkvOIpy</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Drive</td>\n",
+       "      <td>Incubus</td>\n",
+       "      <td>0.645</td>\n",
+       "      <td>0.666</td>\n",
+       "      <td>0.792</td>\n",
+       "      <td>90.565</td>\n",
+       "      <td>-6.862</td>\n",
+       "      <td>0.1900</td>\n",
+       "      <td>0.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>6</th>\n",
+       "      <td>2izoqbHZCGaoFOO8vcc1hK</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Boyfriend</td>\n",
+       "      <td>Alex G</td>\n",
+       "      <td>0.781</td>\n",
+       "      <td>0.741</td>\n",
+       "      <td>0.737</td>\n",
+       "      <td>93.077</td>\n",
+       "      <td>-12.636</td>\n",
+       "      <td>0.0638</td>\n",
+       "      <td>0.000037</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>7</th>\n",
+       "      <td>0GNI8K3VATWBABQFAzBAYe</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Stay</td>\n",
+       "      <td>Rihanna</td>\n",
+       "      <td>0.621</td>\n",
+       "      <td>0.125</td>\n",
+       "      <td>0.310</td>\n",
+       "      <td>111.893</td>\n",
+       "      <td>-9.903</td>\n",
+       "      <td>0.0308</td>\n",
+       "      <td>0.000025</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>8</th>\n",
+       "      <td>0VxFKXvKLjYWU7oPPMwzuN</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Somewhere Only We Know</td>\n",
+       "      <td>Keane</td>\n",
+       "      <td>0.457</td>\n",
+       "      <td>0.389</td>\n",
+       "      <td>0.646</td>\n",
+       "      <td>172.257</td>\n",
+       "      <td>-10.132</td>\n",
+       "      <td>0.0379</td>\n",
+       "      <td>0.010900</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>9</th>\n",
+       "      <td>11ETYjIGagOXU1PtCmF3T2</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Stuck In The Moment</td>\n",
+       "      <td>Justin Bieber</td>\n",
+       "      <td>0.718</td>\n",
+       "      <td>0.452</td>\n",
+       "      <td>0.709</td>\n",
+       "      <td>90.026</td>\n",
+       "      <td>-11.566</td>\n",
+       "      <td>0.2180</td>\n",
+       "      <td>0.000162</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                       id     genre                             track_name  \\\n",
+       "0  6wN5nWLgjEGmPwozDh2jwM  acoustic                                Kiss Me   \n",
+       "1  5z1vCywwTJAP8qSkGJymFY  acoustic                           Creep - Live   \n",
+       "2  1ZmbLKxfrWh2ejFjiZxZPW  acoustic  Better Off - Live From Spotify London   \n",
+       "3  7noCkklUhEAoj8GJkbAuHq  acoustic                              All of Me   \n",
+       "4  6wDKGtbPpF9xPMRv7bswQN  acoustic                               Dead Sea   \n",
+       "5  7nnWIPM5hwE3DaUBkvOIpy  acoustic                                  Drive   \n",
+       "6  2izoqbHZCGaoFOO8vcc1hK  acoustic                              Boyfriend   \n",
+       "7  0GNI8K3VATWBABQFAzBAYe  acoustic                                   Stay   \n",
+       "8  0VxFKXvKLjYWU7oPPMwzuN  acoustic                 Somewhere Only We Know   \n",
+       "9  11ETYjIGagOXU1PtCmF3T2  acoustic                    Stuck In The Moment   \n",
+       "\n",
+       "     artist_name  danceability  valence  energy    tempo  loudness  \\\n",
+       "0   Jason Walker         0.429    0.330   0.184   77.567    -9.731   \n",
+       "1           Korn         0.484    0.236   0.534  104.023    -8.156   \n",
+       "2           HAIM         0.510    0.419   0.702  119.296   -10.475   \n",
+       "3   Boyce Avenue         0.606    0.308   0.209  125.969   -10.273   \n",
+       "4  The Lumineers         0.713    0.472   0.319   94.043   -11.077   \n",
+       "5        Incubus         0.645    0.666   0.792   90.565    -6.862   \n",
+       "6         Alex G         0.781    0.741   0.737   93.077   -12.636   \n",
+       "7        Rihanna         0.621    0.125   0.310  111.893    -9.903   \n",
+       "8          Keane         0.457    0.389   0.646  172.257   -10.132   \n",
+       "9  Justin Bieber         0.718    0.452   0.709   90.026   -11.566   \n",
+       "\n",
+       "   speechiness  instrumentalness  \n",
+       "0       0.0299          0.000000  \n",
+       "1       0.1510          0.000000  \n",
+       "2       0.0296          0.003800  \n",
+       "3       0.0418          0.000000  \n",
+       "4       0.0289          0.000079  \n",
+       "5       0.1900          0.000000  \n",
+       "6       0.0638          0.000037  \n",
+       "7       0.0308          0.000025  \n",
+       "8       0.0379          0.010900  \n",
+       "9       0.2180          0.000162  "
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head(10)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import seaborn as sns; sns.set_theme()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<AxesSubplot:>"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAbEAAAFICAYAAADeTcBgAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjMuMSwgaHR0cHM6Ly9tYXRwbG90bGliLm9yZy/d3fzzAAAACXBIWXMAAAsTAAALEwEAmpwYAABHR0lEQVR4nO3deVhU5f//8ecwCG4hLoAbmppbfcQsF1TcsERNRMCvZn3Qj5W2iKgpuYBL7mvulZapJe4KiBuupSW5leIClLtUskiCorLMnN8f/pycwBpZPDPD+3Fd57o4Z86ceUHGm/s+97lvjaIoCkIIIYQFslE7gBBCCFFQUsSEEEJYLCliQgghLJYUMSGEEBZLipgQQgiLJUVMCCGExZIiJoQQosjduXOHHj16kJiYmOe1uLg4/Pz88PLyIiQkhNzc3AJ/jhQxIYQQRer06dP069ePK1eu5Pt6cHAwEyZMIDo6GkVR2LhxY4E/S4qYEEKIIrVx40YmTpyIs7Nzntd+++037t+/z4svvgiAn58fu3fvLvBn2Rb4nUIIIUqMjIwMMjIy8hx3cHDAwcHB6Ni0adMee53k5GScnJwM+05OTiQlJRU4lxQxM7OjVEO1I+Sr07fT1Y6Qr522vmpHyFfMyXtqR3isZ2uXVTuCRUm9WfD7NcXt4/6lCn0NU3/nXPokkCVLluQ5HhgYyNChQ03+PL1ej0ajMewrimK0/6SkiAkhRAmmKWVaARkwYAC+vnn/aPx7K+zfVK1alZSUFMN+ampqvt2OppIiJoQQJZiNrWlFLL9uw4KoUaMG9vb2nDx5kpdffpnIyEjat29f4OvJwA4hhCjBNKVsTNoKa9CgQZw5cwaAuXPnMmPGDLp27crdu3fp379/ga8rLTEhhCjBtGWKry1z4MABw9dffPGF4etGjRqxefPmIvkMKWJCCFGCmdqdaK6kiAkhRAlm6sAOcyVFTAghSjBpiQkhhLBYGq0UMSGEEBZKWwQjD9UkRUwIIUowjVaKmBBCCAtlY+HdiWZXgseMGcPWrVtV+ezExEQ8PT3zfW3QoEEkJSWxdetWxowZY3Ts+vXrjBs37mlGFUKIIqGx0Zi0mStpiZno0Qf1/n7s6NGjXL9+/WlHEkKIQrP0lpjqRUxRFGbOnMm3336Ls7MzOp2Oli1bMn/+fGJiYkhPT8fZ2Zn58+dTpUoVPDw88PLy4uTJk2i1WhYsWICrqytHjhxh5syZKIpC9erVmTdvHmXKlGH27NkcO3YMnU6Hn58f//vf/8jNzWXSpEn8+uuvpKam0rBhQz755BMAsrKyGDZsGJcvX6ZWrVpMmzaNChUq4Onpyddff22U/eGxqVOnkpiYyMcff8ydO3do0aIFffr0ASAgIIBRo0bRtGnTp/6zFUKIf2PpoxNV706Mjo7m/PnzbN++nYULF3Lt2jV0Oh2XLl1i/fr1REdHU61aNbZt2wZASkoKrVu3JiIighYtWhAWFkZ2djajRo1i1qxZREVF0aBBA8LDww2rhYaHh7N582b279/PiRMn+PnnnylVqhQbNmxg79693L59m++++w6AmzdvEhAQwLZt23B1dWXp0qX/+j2Ehobyn//8h4kTJ+Lv709kZCTwYPG3tLQ0KWBCCLNlY6s1aTNXqrfEjh07RpcuXShVqhSVKlWiffv2aLVaRo8ezaZNm7h8+TKnTp2iVq1ahve0a9cOgPr163PixAkSEhJwcXGhcePGAIwcORKAoKAg4uLi+PHHHwG4e/cuCQkJvPnmmzg6OhIWFsalS5e4cuUKd+/eBaBOnTo0b94cAB8fH8P9L1O1atWK8ePHk5iYSGRkJD4+PoX7AQkhRDGS7sRC0mg0KIpi2Le1teXWrVu8/fbb/O9//8PLywsbGxujc+zt7Y3eW6pUKaNF1W7fvk1mZiY6nY7g4GC6dOkCQFpaGuXKlWP//v0sWrSI/v374+fnx59//mm4vq3tXz8SRVGM9k39fnr16sWOHTvYtWsXK1asePIfihBCPCXmPGjDFKp3J7Zu3Zpdu3aRnZ1Neno6hw8fRqPR0LJlS/r168ezzz7Lt99+i06ne+w16tSpw82bN7lw4QIAX375JevWrcPd3Z2NGzeSk5NDZmYmb7zxBqdOnSImJoZu3brh7++Pg4MDR48eNVz/4sWLnD9/HoAtW7bQpk2bf/0etFotubl/rf7q5+fH+vXrqVatGi4uLoX58QghRLHS2NiYtJkr1Vtir7zyCmfOnKFHjx5UqVKFevXqcf/+feLj4/H29gbgP//5D4mJiY+9hr29PXPmzOGjjz4iJyeHWrVqMXv2bOzs7Lh69Sq+vr7k5ubi5+dHq1atcHR0ZNSoUezYsYNSpUrx0ksvGa5fq1Ytli5dyrVr12jQoAEjRoz41++hXr163L59m+DgYObMmUO1atWoVq1avqugCiGEObH0lphGebSfThSaoigkJycTEBDA9u3bsbOze6L37yjVsJiSFU6nb6erHSFfO23N8w+FmJP31I7wWM/WLqt2BIuSejP3309Sycf9SxX6Gud9O5t03vPh+wv9WcXBfNuIFio6OhofHx8+/PDDJy5gQgjxtEl3ojDStWtXunbtqnYMIYQwiaV3J0oRE0KIEkyKmBBCCIslRUwIIYTFMuf7XaaQIiaEECWYLIophBDCYklLTAghhMWy9Htill2ChRBCFEpxLIoZFRVF9+7d6dKlC2FhYXleP3fuHP7+/vTs2ZN3332XjIyMAueXlpiZMdeZMQ52NM+Vq589m/9K3GpLrVdR7QiPpTHTP7xv/vn4+VHVlJyUqXaEf+BY6CsUdXdiUlIS8+fPZ+vWrdjZ2fH666/TqlUrnnvuOcM506ZNIygoiA4dOjBz5kxWrFhh0hR/+ZGWmBBClGBF3RI7cuQI7u7uODo6UrZsWby8vNi9e7fROXq9nszMB38c3Lt3j9KlSxc4v7TEhBCiBNNoTVvwMiMjI99uPwcHBxwcHAz7ycnJODk5GfadnZ2JjY01es+YMWN46623mD59OmXKlDEsYFwQUsSEEKIEM7WVtXr1apYsWZLneGBgIEOHDjXs6/V6o/UdFUUx2r9//z4hISGsWrUKNzc3Vq5cyejRo1m+fHmB8ksRE0KIEszUe2IDBgzId3mpR1thAFWrVuXEiROG/ZSUFJydnQ37v/zyC/b29ri5uQHQt29fFi5cWJDogBQxIYQo0Uxtif292/Bx2rRpw+LFi0lLS6NMmTLs2bOHKVOmGF6vXbs2N27c4NKlS9StW5f9+/fTpEmTAueXIiaEECVYUY9OdHFxYcSIEfTv35+cnBx69+6Nm5sbgwYNIigoiCZNmjBjxgyGDx+OoihUrlyZ6dMLPipbipgQQpRgNrZFP0jd29sbb29vo2NffPGF4esOHTrQoUOHIvksKWJCCFGSybRTQgghLJXGXJ9+N5EUMSGEKMFkAmAhhBAWy9InAJYiJoQQJZmFt8QsO30RGDNmDFu3blU7hhBCqMJGqzVpM1fSEhNCiJLMwrsTrbIlFhgYSHR0tGHfz8+PY8eO0a9fP3x9fencuTP79u3L876IiAh8fX3x8fFh3LhxZGVlAeDh4cGUKVPo1asX/v7+XL9+HXgwW3PPnj3x9vbm3Xff5c6dO+h0OmbMmIGvry89e/Zk1apVT+V7FkKIgtDY2Ji0mSvzTVYIPj4+7NixA4ArV66QlZXFmjVrmDp1KuHh4UydOjXPXF2//vorGzduZP369URGRlK5cmVWrFgBPJj7q3Xr1kRERNCiRQvCwsLIzs5m1KhRzJo1i6ioKBo0aEB4eLhhNubw8HA2b97M/v37jeYRE0IIc1Ici2I+TVbZndihQwcmT57MnTt32L59Oz179uR///sfBw8eZPfu3Zw+fdqwls1DR48e5erVq/Tp0weAnJwcnn/+ecPr7dq1A6B+/fqcOHGChIQEXFxcaNy4MQAjR44EICgoiLi4OH788UcA7t69S0JCAs2bNy/271sIIZ6YxrLbMlZZxOzs7OjUqRMHDhxg9+7dLFu2jDfeeINWrVrRqlUrWrduzahRo4zeo9Pp6NatG6GhoQBkZmai0/210qy9vT3w4MFARVEoVaqU0UOCt2/fNrwnODiYLl26AJCWlka5cuWK+1sWQogCMedWliksuwT/Ax8fH1auXImjoyPlypXjypUrDBs2jPbt27N//36jAgXQqlUr9u7dy82bN1EUhUmTJrF69erHXr9OnTrcvHmTCxcuAPDll1+ybt063N3d2bhxIzk5OWRmZvLGG29w6tSp4vxWhRCiwDRarUmbubLKlhjAyy+/zO3bt+nXrx+Ojo707t2b1157DVtbW9zd3bl//z537941nN+oUSMCAwMZMGAAer2exo0bM3jw4Mde397enjlz5vDRRx+Rk5NDrVq1mD17NnZ2dly9ehVfX19yc3Px8/OjVatWT+NbFkKIJ2fGgzZMoVEURVE7hPjL3R+2qB0hXwc7jlM7Qr5czv6odoR8nbhSUe0Ij2WuU+Xd/FP37yep4Pq122pHeKzPgh0LfY07Sz8y6bzyQ2YX+rOKg9W2xIQQQphABnYIIYSwWBY+sEOKmBBClGDmPGjDFFLEhBCiBDPn2ThMIUVMCCFKMnMd6WMiKWJCCFGSSUtMCCGExZKWmBBCCEsl98SEEEJYLhmdKIrSTltftSPk69mznmpHyFfSf9zVjpAvt1jzXX4nW2ee/9tfsSujdoR82ZVyUDtCsdJY+MPOlp1eCCFE4dhoTNueQFRUFN27d6dLly6EhYXlef3SpUsEBATQs2dP3n77bdLT0wsev8DvFEIIYfk0NqZtJkpKSmL+/PmsXbuWiIgINmzYYFjtA0BRFN5//30GDRrEtm3baNy4McuXLy9wfCliQghRkmk0pm0mOnLkCO7u7jg6OlK2bFm8vLzYvXu34fVz585RtmxZ2rdvD8B7773Hm2++WeD45tk5LoQQ4ukwcXRiRkYGGRkZeY47ODjg4PDXfcPk5GScnJwM+87OzsTGxhr2r127RpUqVRg3bhxxcXHUrVuX8ePHFzx+gd8phBDC8mm1Jm2rV6+mc+fOeba/Lx6s1+uNVr1XFMVoPzc3l2PHjtGvXz/Cw8NxdXVl5syZBY4vLTEhhCjJTLzfNWBAf3x9846efrQVBlC1alVOnPhrdG5KSgrOzs6GfScnJ2rXrk2TJk0A6NGjB0FBQQVJDkhLTAghSjYT74k5ODhQs2bNPNvfi1ibNm2IiYkhLS2Ne/fusWfPHsP9L4BmzZqRlpZGfHw8AAcOHOCFF14ocHxpiQkhRElWxDN2uLi4MGLECPr3709OTg69e/fGzc2NQYMGERQURJMmTVi6dCmhoaHcu3ePqlWrMnt2wVeN1iiKohRhflFIm4/q1Y6Qr2cdC/4cR3Ey14edK8rDzk/sSqp5Puycmmae/08CjPIrfAG6v+Nzk84r/dp7hf6s4mCe/5qFEEI8HVrLLgOWnV4IIUThyCz2QgghLJaFz50oRUwIIUoyaYkJIYSwWLKemGVYvnw5u3btQqfT4eHhQb9+/Rg6dCj169cnLi6OypUrs3DhQhwdHTl06BCLFi0iNzeXmjVrMmXKFCpWrIinpydubm7ExcWxdu1aduzYwZo1a3jmmWeoW7cutWrVomrVqvz444/MmzcPgMWLF2Nvb8/gwYNV/gkIIUReioW3xCy7BJvo0KFDnD17ls2bNxMREUFSUhJRUVHEx8czcOBAtm/fjoODA1FRUaSlpTFv3jxWrFhBREQEHh4ezJ0713Ct9u3bEx0dTUpKCmFhYWzdupW1a9dy9epVALp3705MTAx37twBYPv27fj4+KjyfQshxL+ysTVtM1Pmm6wIxcTEEBsbi5+fHwD3799HURQqV67M888/D0D9+vVJT0/n9OnT/PHHH/Tv3x94MA9YhQoVDNdq2rSp4ZqdOnWifPnyALz22mtkZGRQrlw5OnTowN69e3F1dcXV1RUXF5en+e0KIYTJLL0lViKKmE6nY8CAAQwcOBB4MBvzjRs3OHXqlOEcjUaDoijodDpeeuklPv/8wQOAWVlZZGZmGs6zt7cHwMbGBr0+/4cg/f39+eyzz6hZs6ahcAohhFmy8NGJlp3eRO7u7kRGRpKZmUlubi5Dhgzh7Nmz+Z7btGlTTp06xeXLlwH49NNP850SpXXr1nz33XfcuXOH7Oxs9uzZY5ipuXnz5ty4cYOjR4/yyiuvFN83JoQQhVXE64k9bSWiJebp6Ul8fDx9+vRBp9PRrl07WrRoke+5Tk5OTJ8+neHDh6PX63FxcWHOnDl5zmvQoAH9+/enb9++lC1blooVKxpaaQCvvvoqt27dws7Orti+LyGEKDQZnWgZPvjgAz744AOjYwcOHDB8PXToUMPXnp6eeHp65rnGo+dfvnyZnJwcduzYAcD7779PvXr1UBSFnJwcjh8/zrhx44r62xBCiCKl2GjVjlAoJaaIFbUaNWpw5swZevTogUajwcPDg06dOpGSksJrr73G//3f/xVqeQEhhHgaFAu/JyZFrIDs7OwMz4I9ytnZmePHj6uQSAghCsCM73eZQoqYEEKUYNISE0IIYbmkJSaEEMJiSUtMCCGEpZLRiUIIISyWgnQnCiGEsFAysEMIIYTlkiImilLMyXtqR8hXar2KakfIl1vsCbUj5OtPt+ZqR3ispOgEtSPkK/GPXLUj5MvhGcu+Z/RvZBZ7IYQQFku6E4UQQlgsGZ0ohBDCYln66ETLbkcKIYQoFEVjY9L2JKKioujevTtdunQhLCzssed9++23+a4Y8iSkJSaEECVZEQ/sSEpKYv78+WzduhU7Oztef/11WrVqxXPPPWd0XmpqKrNmzSr050lLTAghSjAFG5O2jIwMEhMT82wZGRlG1zty5Aju7u44OjpStmxZvLy82L17d57PDQ0NJTAwsND5pSUmhBAlmN7EgR2rV69myZIleY4HBgYaLSqcnJyMk5OTYd/Z2ZnY2Fij93z99dc8//zzNG3atICp/yJFTAghSjBTB3YMGDAAX1/fPMcdHByM9vV6PZpHuigVRTHa/+WXX9izZw+rVq3ixo0bBUz9FyliQghRgpk6aMPBwSFPwcpP1apVOXHir0kIUlJScHZ2Nuzv3r2blJQU/P39ycnJITk5mTfeeIO1a9c+eXjknpgQQpRoikZj0maqNm3aEBMTQ1paGvfu3WPPnj20b9/e8HpQUBDR0dFERkayfPlynJ2dC1zAQIqYEEKUaAoakzZTubi4MGLECPr370+vXr3o0aMHbm5uDBo0iDNnzhR5fulOFEKIEqw4pp3y9vbG29vb6NgXX3yR57yaNWty4MCBQn1WiWuJ3b59myFDhqgdQwghzIJeozVpM1clriWWnp5OXFyc2jGEEMIsWPq0UyWuiE2dOpXk5GSGDBnCq6++yurVq9Hr9bzwwgtMnDgRe3t72rZtS+fOnYmNjaVKlSr4+/vzzTffcOPGDWbOnEnLli0JCAigUaNGnDhxgqysLMaNG4eHhwepqamEhITw+++/Y2try4gRI4xuagohhDmx9FnsLTt9AYSGhuLs7Mzw4cPZuHEj69evJzIyksqVK7NixQrgwXQo7du3JyIigqysLPbt28fatWsZOnQoq1evNlzrzp07hIeHM2/ePMaMGUN2djZTpkzB3d2dqKgoFi1axLhx40hNTVXr2xVCiH9U1AM7nrYS1xJ76OjRo1y9epU+ffoAkJOTw/PPP294/WHrqUaNGrz88ssAVK9e3WiKlYfvbdy4MU5OTiQkJPDjjz8ydepUAFxdXWnatCmnT5+mc+fOT+X7EkKIJyGLYloonU5Ht27dCA0NBSAzMxOdTmd43c7OzvC1Vpv/Tc1Hj+v1emxtbVEUxegcRVGMriuEEOZEUSy7iJW47kRbW1tyc3Np1aoVe/fu5ebNmyiKwqRJk4y6Ck2xc+dOAM6cOUNGRgYNGjTA3d2dzZs3A3D9+nV++uknXnzxxaL+NoQQokjo0Zq0masS1xKrXLky1atXZ9q0aQQGBjJgwAD0ej2NGzdm8ODBT3St69evG+YSmz9/PlqtlpCQECZMmMDWrVuBBwNJHp1yRQghzIk53+8yhUb5e/+XMElAQACBgYG0atWqSK878tPMIr1eUalfr5zaEfLlVuu22hHy9adbc7UjPFZSdILaEfKV+Eeu2hHy5fCM+bZChvcsfAGKv5ho0nmN6tUs9GcVhxLXEhNCCPEXS2+JSREroG+++UbtCEIIUWiWPrBDipgQQpRgegsf3ydFTAghSjDpThRCCGGxpDtRCCGExdJLS0wIIYSlku5EIYQQFku6E4UQQlgsvSKjE0URerZ2WbUj5MtcJ7rO1pnnP2FznRUDwMWrodoR8pW93Tx/ZmuWfKd2hMca3rNDoa8h3YlCCCEslnQnCiGEsFh6tQMUkhQxIYQowaQlJoQQwmLJPTEhhBAWy9JHJ1p2eiGEEIWiV0zbnkRUVBTdu3enS5cuhIWF5Xl93759+Pj40LNnTz744APS09MLnF+KmBBClGAKGpM2UyUlJTF//nzWrl1LREQEGzZs4MKFC4bX79y5w6RJk1i+fDnbtm2jYcOGLF68uMD5pYgJIUQJpigak7aMjAwSExPzbBkZGUbXO3LkCO7u7jg6OlK2bFm8vLzYvXu34fWcnBwmTpyIi4sLAA0bNuSPP/4ocH65JyaEECWYYmJX4erVq1myZEme44GBgQwdOtSwn5ycjJOTk2Hf2dmZ2NhYw37FihV59dVXAbh//z7Lly8nICCggOmliAkhRImmM3Fgx4ABA/D19c1z3MHBwWhfr9ejeWSKH0VRjPYfun37NkOGDKFRo0b5XtdUUsSEEKIEM7Ul5uDgkKdg5adq1aqcOHHCsJ+SkoKzs7PROcnJybz99tu4u7szbty4J8r7d3JPTAghSrCiHtjRpk0bYmJiSEtL4969e+zZs4f27dsbXtfpdLz33nt069aNkJCQfFtpT8Kii9jRo0cL1Zf6kKenJ4mJiUWQSAghLEtRD7F3cXFhxIgR9O/fn169etGjRw/c3NwYNGgQZ86c4cCBA5w/f57o6Gh8fHzw8fEhJCSkwPmlO1EIIUqw4ph2ytvbG29vb6NjX3zxBQBNmjQhPj6+yD7LKorY5cuXmTBhArdu3aJs2bKEhITg5ubGmDFjaNmyJX5+fsCDoZwJCQncunWL4OBgbty4Qb169cjKygJg69atHD58mPT0dK5fv07btm2ZNGkSAMuXL2fXrl3odDo8PDwIDg4mMzOTDz/8kNTUVACGDBlC586dWblyJeHh4djY2ODm5sbkyZNV+bkIIcS/MfWemLmyiiIWHBzM4MGD6dKlC6dOnWLYsGFER0c/9vxFixbx/PPP88UXX3D8+HF27dpleO3nn39m+/btaLVaunbtSr9+/UhKSuLs2bNs3rwZjUZDcHAw27ZtQ6/XU6NGDZYvX05cXBzbtm2jY8eOLFu2jMOHD6PVagkJCSEpKcnwTIQQQpgTnUwArK7MzEwSExPp0qULAC+++CIVKlTg0qVLj33PsWPHmDdvHgAtWrTA1dXV8FqzZs0oX748AK6urqSnpxMTE0NsbKyhRXf//n2qV6+Ov78/n3zyCUlJSXTs2JEhQ4ag1Wpp1qwZvXv3pnPnzgwcOFAKmBDCbMks9ipT8mkLK4qCTqdDo9EYXs/JyTG8/uhxAK1Wa/ja3t4+z3k6nY4BAwYwcOBAADIyMtBqtZQrV45du3Zx+PBhDh48yFdffcXOnTv59NNPOXXqFIcOHeKdd95h7ty5tGzZssi/dyGEKKwnnRfR3Fj06ESA8uXLU7NmTfbs2QPAqVOnSE1NpX79+jg6Ohrm7Nq3b5/hPa1btyYyMhKA2NhYrl279o+f4e7uTmRkJJmZmeTm5jJkyBCio6NZs2YNixcvplu3bkycOJG0tDRu3bpF9+7dadCgAcOGDaNt27YkJJjnsutCCKEopm3myuJbYgBz5sxh0qRJLF68mFKlSrF48WLs7Ozo168fw4cPx9vbG3d3d8NUKEFBQYwZM4bXXnuNunXrGnUn5sfT05P4+Hj69OmDTqejXbt2+Pr6GgZ2eHt7o9VqCQ4OplKlSvTt25fevXtTpkwZ6tSpg7+//9P4MQghxBOz9PXENEp+/XFCNYt3mOd/DrtS5vkPvWH1e2pHyNel5DJqR3gsF6+GakfI1/Xt5tljsWbJd2pHeKzvozoU+hqbj+pNOq93K/PsuLOKlpgQQoiC0ZtWw8yWFDEhhCjB9DI6UQghhKWy9BtKUsSEEKIEkyImhBDCYln6c2JSxIQQogTT6+WemBBCCAslLTEhhBAWS+6JCSGEsFhSxESJcPNPndoR8nXFzjxnxkj8I1ftCI+VbaYzY7j2MM+ZRNouPaV2hGIl3YlCCCEslrTEhBBCWCydeXaymEyKmBBClGDSEhNCCGGx5J6YEEIIi2X6alzm+VC0FDEhhCjBpDtRCCGExbL0gR3muVSnEEKIp0KvmLY9iaioKLp3706XLl0ICwvL83pcXBx+fn54eXkREhJCbm7Bn6uUIiaEECWYopi2mSopKYn58+ezdu1aIiIi2LBhAxcuXDA6Jzg4mAkTJhAdHY2iKGzcuLHA+aWICSFECaboFZO2jIwMEhMT82wZGRlG1zty5Aju7u44OjpStmxZvLy82L17t+H13377jfv37/Piiy8C4OfnZ/T6k5J7YkIIUYKZ2lW4evVqlixZkud4YGAgQ4cONewnJyfj5ORk2Hd2diY2Nvaxrzs5OZGUlFSA5A9IERNCiBLM1K7CAQMG4Ovrm+e4g4OD0b5er0ej+Ws4vqIoRvv/9vqTKlHdiQ0b5j/B6KBBgwr1l4AQQlgqnU4xaXNwcKBmzZp5tr8XsapVq5KSkmLYT0lJwdnZ+bGvp6amGr3+pEpUEXucL774AhcXF7VjCCHEU1fUAzvatGlDTEwMaWlp3Lt3jz179tC+fXvD6zVq1MDe3p6TJ08CEBkZafT6k1KtO/HGjRuMGjWKu3fvYmNjQ2hoKB9++CFdu3blyJEjAEyfPp3nn3+eq1evMmnSJG7dukXp0qUZP348zz//PKmpqUyYMIEbN26g0WgYOXIkbdq04datW4SEhHDp0iXs7OwYM2YMrVu3BmDChAmcOnUKgMWLF1O7dm08PT35+uuvOXbsGIcPHyY9PZ3r16/Ttm1bJk2aBMDy5cvZtWsXOp0ODw8PgoODyczM5MMPPyQ1NRWAIUOG0LlzZ1auXEl4eDg2Nja4ubkxefLkp/7zFUIIU+iL+GlnFxcXRowYQf/+/cnJyaF37964ubkxaNAggoKCaNKkCXPnziU0NJQ7d+7wwgsv0L9//wJ/nmpFbPPmzXTs2JF33nmHQ4cOGapy2bJliYiI4MCBA4wePZqoqChGjx7NhAkTeP7557lw4QJDhgwhOjqaadOm4e/vT+fOnUlOTuaNN94gIiKChQsXUqtWLZYuXUpCQgITJkwwFLE2bdowefJkZs2axfr16xk9erRRrp9//pnt27ej1Wrp2rUr/fr1IykpibNnz7J582Y0Gg3BwcFs27YNvV5PjRo1WL58OXFxcWzbto2OHTuybNkyDh8+jFarJSQkhKSkJGnpCSHMkqIv+mt6e3vj7e1tdOyLL74wfN2oUSM2b95cJJ+lWhFr3bo1Q4cOJS4ujg4dOvDf//6XsLAw+vTpA4Cnpydjxozhxo0bnD17lrFjxxree/fuXf7880+OHDnCpUuXWLRoEQC5ublcv36d48ePM3fuXODBfbANGzYY3vvKK68A8Nxzz3HixIk8uZo1a0b58uUBcHV1JT09nZiYGGJjY/Hz8wPg/v37VK9eHX9/fz755BOSkpLo2LEjQ4YMQavV0qxZM3r37k3nzp0ZOHCgFDAhhNkyfe5E86RaEXv55ZfZsWMH3377LTt37iQ8PPxBINu/Iun1enQ6HXZ2dkRGRhqO37hxA0dHR/R6PatXr8bR0RF4MHSzcuXK2NraGo12uXjxInXq1DG6vkajyfc/nr29veHrh+fodDoGDBjAwIEDAcjIyECr1VKuXDl27drF4cOHOXjwIF999RU7d+7k008/5dSpUxw6dIh33nmHuXPn0rJlyyL6yQkhRNHRF0NL7GlSbWDH7Nmz2bZtG76+vkyYMIHz588DsGPHDgD27t1LvXr1qFGjBs8++6yhiP3www+8+eabALi7u7N27VoALly4gLe3N/fu3aN58+aG61y8eJFBgwYVaginu7s7kZGRZGZmkpuba+jOXLNmDYsXL6Zbt25MnDiRtLQ0bt26Rffu3WnQoAHDhg2jbdu2JCSY53LwQgih0ysmbeZKtZZYQEAAI0eOZOvWrWi1WmbNmsXkyZP56aef2Lx5M2XKlGHmzJkAzJkzh0mTJvHll19SqlQp5s+fj0ajITQ0lAkTJhj6XmfPnk358uUJCgoiNDSUnj17Ymtry+zZswtVxDw9PYmPj6dPnz7odDratWuHr6+vYWCHt7c3Wq2W4OBgKlWqRN++fenduzdlypShTp06+Pv7F8nPTAghippixgXKFBrFjDpEH44SrFmzptpRVLN4h9n85zBy+4559jlUd9GqHSFf134r+ISmxc25innOceDaI//nONV2aOkptSM81qzBZQp9jXErskw6b/rb9v9+kgrM81+zEEKIp0Jv4S0xsypiBw4cUDuCEEKUKGbUGVcgZlXEhBBCPF06nRQxIYQQFkpaYkIIISyW3BMTQghhsSy8ISZFTAghSjJLf05MipgQQpRgRT2L/dMmRUwIIUowfa55TmRgKiliZib1pnnO9JCclKl2hHzZlXL495NUULaMDba2BZ/qrDitWfKd2hHy1dZMZ8ZoP+RFtSM83uDCz8tq4b2JUsSEKA7mWsCE+Du5JyaEEMJiyXNiQgghLJY8JyaEEMJiSUtMCCGExZLRiUIIISyWPCcmhBDCYsnoRCGEEBZL7okJIYSwWDI6UQghhMXS657ewI7ff/+d4OBgbt68SZ06dZg7dy7lypUzOic5OZmxY8eSmpqKjY0NH330Ea1bt37sNW2KO7QQQgjzpej1Jm1F4eOPP+aNN95g9+7d/Oc//+HTTz/Nc87s2bPx9PQkMjKSefPmMWrUKHQ63WOvKUVMCCFKML1eMWnLyMggMTExz5aRkWHS5+Tk5HD8+HG8vLwA8PPzY/fu3XnOe/XVV+nRowcAtWvXJisri7t37z72uv9axM6cOUNISIhJIR+6ffs2Q4YMeaL3FJeNGzeyffv2fzxn8eLFLF68+CklEkII86Eoiknb6tWr6dy5c55t9erVJn3On3/+Sfny5bG1fXAXy8nJiaSkpDzneXl5UaFCBQBWrFhB48aNeeaZZx573X+9J9akSROaNGliUsiH0tPTiYuLe6L3FJeffvqJli1bqh1DCCHMkqlD7AcMGICvr2+e4w4OeVeS2LVrFzNmzDA6Vrt2bTQa44mx/77/qFWrVrFhwwbWrFnzj7n+tYgdPXqUJUuWAA8K2smTJ0lLSyM0NJQOHToQFRXFl19+iVarpWbNmsyZM4epU6eSnJzMkCFDGDt2LO+88w4VK1akdOnSeHt7c+zYMWbOnAlAQEAAgYGBAHz++eeUKlWKxMREPD09KVu2LPv27QNg+fLlVKlShUOHDrFo0SJyc3OpWbMmU6ZMoWLFinh6etKzZ0++//577t27x6xZs8jIyODAgQP8+OOPODk54eLiwpQpU7h79y5paWkMHjyYfv36GX2/Hh4eeHl5cfLkSbRaLQsWLMDV1ZXY2FhmzJjB/fv3qVixIh9//DGurq6sXLmS8PBwbGxscHNzY/LkycTHxzNhwgRyc3Oxt7dnxowZPPvss//2oxZCiKfO1CLm4OCQb8HKT7du3ejWrZvRsZycHFq1aoVOp0Or1ZKSkoKzs3O+7589ezbfffcdYWFhVK1a9R8/64nuieXk5LBhwwbGjh3LwoULAViwYAFfffUVW7dupUaNGly6dInQ0FCcnZ1ZunQpAJcvX2bOnDmsXLnyH69/+vRpPv74Y7Zs2UJYWBiVKlVi69atNGzYkB07dpCWlsa8efNYsWIFEREReHh4MHfuXMP7HR0d2bx5M6+//jrLli2jTZs2eHp6EhQURLt27di0aRMffPABW7Zs4euvv2b27Nl5MqSkpNC6dWsiIiJo0aIFYWFhZGdnExoayrx58wgPD2fgwIGMHz8enU7HsmXL2LJlC1u3biUnJ4ekpCRWr17NwIED2bp1K3369OHUqVNP8mMWQoinRqfTmbQVVqlSpWjevDk7d+4EICIigvbt2+c5b9WqVRw9epR169b9awGDJxxi365dOwDq16/PrVu3AOjUqRP9+vXjlVdewcvLi8aNG5OYmGj0vsqVK1OzZs1/vX6DBg2oVq0aABUrVjQMq6xevToZGRmcPn2aP/74g/79+wOg1+sNfad/z7dnz5481x8zZgyHDx9m2bJl/PLLL4+9WfjodU6cOMGVK1e4fv0677//vuGcO3fuoNVqadasGb1796Zz584MHDgQFxcXOnTowOTJkzl8+DCenp506tTpX793IYRQw9OcsWPixImMGTOGzz77jGrVqvHJJ58AsG7dOpKTkwkKCmLp0qWUL1+egIAAw/uWL1+Oi4tLvtd8oiJmb28PGPdjhoaGEh8fz3fffUdwcDCBgYG8/PLLRu8rXbq04WuNRmP0hHhOTo7h61KlShm9T6vVGu3rdDpeeuklPv/8cwCysrLIzPxrxeH88j1q+PDhODg40KlTJ7p37/7YAR+PXkdRFPR6PTVr1iQyMtKQIzU1FYBPP/2UU6dOcejQId555x3mzp1L165dadasGQcPHmTVqlV8++23TJ06Nd/PEkIINT3NGTtq1KjBN998k+f4o7d1jh8//kTXLNQQ+9zcXLp06ULFihV599138fHxIS4uDltbW3Jzc/N9T8WKFbl48SKKonD9+nUSEkxfXrtp06acOnWKy5cvAw8KSH5dgo/SarWGpvAPP/xAUFAQr7zyCocOHQIwqZlct25d0tPTOXHiBABbtmxh1KhRpKWl0b17dxo0aMCwYcNo27YtCQkJDB8+nDNnzvD6668zbNgwzp8/b/L3KIQQT5NerzdpM1eFmrHD1taWoKAg3nrrLezt7alcuTIzZ87EwcGB6tWrExAQkGeESps2bdiyZQtdu3alTp06eVpt/8TJyYnp06czfPhw9Ho9Li4uzJkz5x/f06ZNGz755BOeeeYZhg4dyhtvvIG9vT2NGjWiRo0aebo+82NnZ8fChQuZNm0aWVlZlC9fnlmzZlGpUiX69u1L7969KVOmDHXq1MHf358WLVoQEhLC0qVLKVWqFJMmTTL5exRCiKfJ0icA1iiWPvujlZn4dc6/n6SC5KTMfz9JBfXqmTZa6mmztX380GG1bf7ikNoR8tXW2zwfhWk/5EW1IzzWazmm92Q99hrvnDXpvB1f/qfQn1UcZO5EIYQowWRRTCGEEBZLr0gRE0IIYaEs/Z6YFDEhhCjBimqGerVIERNCiBJMWmJCCCEsVlFMKaUmKWJCCFGCSXeiEEIIiyXdiUIIISyWIkPshRBCWCpLb4nJtFNCCCEsVqFmsRdCCCHUJEVMCCGExZIiJoQQwmJJERNCCGGxpIgJIYSwWFLEhBBCWCwpYkIIISyWFDEhhBAWS4qYEEIIiyVFTAghhMWSIiaEEMJiSRGzIrGxsWpHeKyTJ0+ybt06srOzOX78uNpxDL788ktSUlLUjpGvtLQ0Dh48yL59+0hNTVU7jpHk5GQATpw4QVhYGPfv31c50QPmmOvatWts27YNRVEYP348/v7+nDlzRu1YVkOKmBWZM2cO3t7eZveLefXq1SxYsIBVq1aRmZnJhAkTWLFihdqxALh//z4BAQEMHjyYXbt2kZOTo3YkAA4fPoyPjw9bt24lPDycnj17cvDgQbVjATBx4kQWLFjAhQsXGDlyJOfOnSM0NFTtWGaba+zYsej1evbv38+VK1cYO3Ys06ZNUzuW9VCEVUlMTFSWLl2q9OjRQxk8eLCya9cuJTs7W9VMPj4+SlZWluLj46MoiqLcuXNH6datm6qZ/u748ePKxIkTlW7duikff/yxcv78eVXz+Pr6KteuXTPsX7t2TenZs6eKif7i6+ur6PV6ZdGiRcqiRYsURVEUPz8/lVOZby5/f39FURRl3LhxyoYNGxRFeZBVFA1piVmZGjVq0KtXL7y9vfn111/55ptv6NGjB3v37lUtk42NDXZ2doZ9e3t7tFqtann+7u7duyQmJnL9+nVsbGyoUKEC06ZNY968eaplys3NxdXV1bDv6uqK3kyWkdfpdIaWRfv27bl37x737t1TO5bZ5tJqtURHR/Ptt9/SsWNH9u3bh42N/OotKrIophXZtGkTkZGRpKSk0KtXL9auXUvVqlVJSkrC19eXV199VZVcLVu2ZNasWdy7d499+/axYcMG3N3dVcnyd6NGjSImJoYOHTrw/vvv07x5cwCys7Px8PBg5MiRquSqXr06q1atonfv3gBs3ryZGjVqqJLl73r16oWHhwcvvfQSTZs2pXv37vTt21ftWGaba/LkyaxatYoJEybg7OzMjh07mDp1qtqxrIYsimlFPvroI/z9/WnVqlWe16Kjo/Hy8lIhFej1ejZu3MiRI0fQ6/W0bt2avn37Ymur/t9Qmzdvpnv37pQtWzbPaykpKTg5OamQCm7evMmUKVP48ccfURQFd3d3QkJCcHZ2ViXP3+n1ekNr4s8//6RixYoqJ3rAXHMlJyfj7OzMiRMnSEhIwN/fn9KlS6sdyyqo/1tEFJlnnnkmTwEbPXo0s2bNUq2AAdy7dw+dTseiRYtISkpi/fr15OTkmEURu3HjBl999ZVhX6PRULp0aerVq0fHjh1Vy1W5cmXmzp1LfHw8tra2NGzYEI1Go1qeRx08eJATJ07wwQcf0Lt3b9LS0hg9ejR+fn6SKx8TJ04kJyeHt956i5EjR9K2bVt+/vln5s6dq2oua6H+bxFRaCEhIVy/fp2zZ8/y66+/Go7n5uZy+/ZtFZM9MHLkSBo2bAhAuXLl0Ov1fPTRRyxevFjlZA+GP1+9epXXXnsNgD179lC+fHlOnjzJsWPH+Oijj1TJ9cMPPzB69GicnZ3R6/VkZGSwYMEC3NzcVMnzqCVLljBt2jR27tyJm5sbEyZMICAgQPViYa65zpw5w5YtW1iyZAm9e/dm6NCh+Pv7q5rJmkgRswLvv/8+v/32G9OmTSMwMNBwXKvVUq9ePRWTPfD777/z+eefA1C+fHlGjBiBj4+PyqkeuHz5MmFhYYaBJ6+//joBAQFs2LCBnj17qlbEZsyYwZdffkmjRo2AB78IJ06cyNatW1XJ83eNGjVi8eLF9OzZk3LlypnNownmmOvRAScff/yx2Qw4sRYyRMYK2Nvb06pVKz7//HNq1qxp2KpVq8bdu3fVjodGoyEhIcGwf/HiRbPoSgTIyMggNzfXsJ+Tk2P4mal5u9jOzs5QwACaNGmiWpa/q1KlClOmTOHs2bO0a9eOmTNnUr16dbVjmW2uhwNOatSoQdOmTfH39zeLASfWQgZ2WIF3332XZcuW4enpmec1jUbD/v37VUj1lyNHjhAcHIyLiwvw4Ib77NmzadGihaq5AL7++mvWrVtHx44dURSF7777jv/+97/k5ORw5swZ1YbZT58+nczMTPr06YNWq2XHjh0kJibSv39/AFV/dnfu3GHfvn289NJL1KpVi7CwMHx8fChfvrxqmcw5FxgPOElLS6NSpUoqJ7IeUsTEU5Gdnc0vv/yCra0tdevWNXpuTE1paWmkpKQQExODjY0NrVu3pn79+ly5coXq1aurljMgIOCxr2k0Gr7++uunmCavbdu2cfHiRd577z2io6Pp1auXqnkeMsdcv/32G6Ghofz222+sWbOGUaNGMX36dGrWrKl2NKsgRcwKjB079h9fnzFjxlNKkr+H//Omp6cbddGpnQugW7du7Nq1S+0YFmXu3LncuHGDc+fOsWnTJt5//31eeOEFxowZI7ny8fbbbzNw4EDmzp1LeHi44XnOsLAwVXNZC/O4MSEKpWXLlmpH+EfDhw+nefPmNG/e3GyGiT/UqFEjIiIicHNzM3puR+17KSdOnGD16tWkp6cbHVe7BQbw/fffEx4ejq+vL+XLl2flypX07NlT9WJhrrn+/PNPPDw8mDt3LhqNhj59+kgBK0JSxKyAh4cHTk5O/P7772pHyVdubi6jR49WO0a+Tp8+zenTp42OmcN9xDFjxhAYGKh6Mc3Pw3s7D/8gyc7ONotplMw1V+nSpblx44Yh14kTJ8ymO90aSBGzAqGhoSxbtoz//ve/aDQaoy47c/iF/PLLL3PgwAE8PDzM7n/eAwcOqB0hXy4uLmZxPyc/Xbt2Zfjw4aSnp7Nq1Sq2bdtGjx491I5ltrnGjh3Lu+++y7Vr1/Dx8SE9PZ0FCxaoHctqyD0xUew8PDwM62E9LLIajYa4uDiVk0F6ejpz5szh2rVrLFq0iFmzZjF27FgcHBxUzbV792727duHu7u70eMI5lLYDh8+bJhGzN3dnU6dOqkdCTDfXDk5OVy5cgWdTmdWA5usgRQxK3L79m2WLl3KsWPHsLW1pU2bNrz77ruUKVNG7WhmKygoiLZt2xIWFsbmzZtZunQpcXFxLF++XNVcgwYNIisrK8+kv+YwGAbg119/zTNQxxwemTDHXOY8sMkaSHeiFQkJCaFmzZrMmDEDRVHYsmUL48ePV32OtuzsbL766isuX77M+PHjWbVqFYMHDzaLv0YTExPp27cv69atw87OjhEjRtCzZ0+1Y5Gamkp4eLjaMfL18ccfc/DgQaOlYsxh2L+55jLngU3WQIqYFbl69SqLFi0y7IeEhODt7a1iogcmT55MpUqVOHfuHFqtlqtXrzJu3DjViys8mJrr9u3bhl8uV65cMYvBAG5ubhw8eJD27dub1dpr8GBex927d5vdLOzmmsucBzZZA/X/bxVFpk6dOvz000+G/fj4eJ599ln1Av1/586d48MPP8TW1pYyZcowe/Zs4uPj1Y4FPOhODAgI4Pfff+eDDz7gjTfeYPjw4WrHYv/+/YbnnBo3bkyjRo1o3Lix2rGABwt0muNdCHPN9XBgU3Z2ttpRrJK0xKyAp6cnGo2GrKwsoqOjqVu3LjY2Nly6dInatWurHQ+NRkN2drahtfPnn3+aTbdKu3bteOGFF4iNjUWn0zF58mSqVKmidiy+//57tSM8VoUKFXjttddo1qyZUZew2vd4zDXX7t27WbNmjdExcxnYZA1kYIcV+O233/7xdbVXBI6IiGDTpk1cvXqVbt26sW/fPoYMGWJYtVhNGRkZREVFcevWLaO/4h9dDUAN5nwf8XH36nx9fZ9yEmPmmksULyliViQ7O5vvvvuOzMxM4MESEImJiQwbNkzlZHDhwgWOHj2KTqejZcuWRjO0q2ngwIE888wz1K9f36h1qHYRCw0NpVKlShw4cIBNmzYxYcIEFEVR9T7ivz1Mr9aD2Q9X4H5cPrVyLVmy5B9fV/vfmLWQ7kQr8uGHH5Kens61a9do3rw5R48e5aWXXlItT0REhNF+uXLlgAf36uLj483imafU1FRWrlypdow8zp07R3h4OIcOHTLcR1R7kM7Dh+mzsrK4efMmrq6u2NjYcO3aNWrVqsXu3btVyWXuD/uL4iVFzIokJCSwZ88epk2bhr+/P8OHD1d1kMLRo0f/8XVzKGKNGzcmPj7ebFqGD5njfcSHs5uMGDGCN998k+bNmwMQGxvLl19+qVquZcuWGeUzF49raSmKQmJi4lNOY72kiFmRypUro9FoqFOnDgkJCfTq1UvVlW3/6Yb6/fv3n2KSx/v111/x8/OjUqVK2NvbG46r/dd7//79GThwICkpKUybNo29e/eaTffTxYsXDQUMHjwOcPnyZRUTPXD9+nXWr1/Pn3/+aVYPFW/YsIFZs2YZreZcs2ZN9u7dq2Iq6yFFzIrUr1+fKVOm0K9fP0aNGkVycrJZDDk+cOAACxYs4O7duyiKgl6v5/79+8TExKgdjcWLFxMVFcWFCxd47733OHv2rOozPMCDIjp58mR+/PFH9Ho9n3/+OTNmzDCLwTBVq1Zl4cKFdO/eHUVRiIyMNItHOYYOHUrr1q3N7qHiZcuWERkZyYIFCxgxYgTfffed0aMwonCkiFmRSZMm8fPPP/Pcc88xdOhQYmJiVFuZ+FEzZsxgypQprFy5kvfee499+/YZ/VWqpvXr13Pjxg3Onz9PtWrVmDx5MgkJCaot3xEYGEhcXBzJycmcP3/e8EfIihUrqFatmiqZ/m7OnDksWrSIDz/8EIA2bdqo3tqBB9105vhQceXKlXF1daVhw4b88ssvvPnmm6xbt07tWFZDipgV0Wq1aDQa1q1bh7+/Pw4ODjRo0EDtWDzzzDO4u7vz008/cfv2bYKDg+nevbvasQDzW4Nq5syZ3Lp1i2nTphEaGmo4bmtrS+XKlVXJ9HcVKlRg/PjxasfIo1mzZuzdu5fOnTubxawrD5UpU4Yff/yRhg0bsm/fPpo0aWI23enWQIqYFVm9ejX79u0jOTmZrl27MmHCBHr37s3bb7+taq7SpUtz+fJl6tWrx7Fjx3B3d1f1Xt2jzG0NqvLly1O+fHk+++wz1TL8m0aNGuXprnNycuLQoUOq5lEUhfXr1xuymctqCePHj2fTpk2MGTOGzZs3061bN7O5v2kVFGE1fHx8lKysLMXHx0dRFEW5c+eO0q1bN3VDKYpy7NgxJSgoSMnKylL8/PyU5s2bKzNnzlQ7lqIoirJs2TIlKChI6dSpk7Jy5UrF19dX+eyzz9SOZTGys7OVnTt3KtOnT1c7ihG9Xq92BIPvv/8+z7Ho6GgVklgnaYlZERsbG6MZHezt7c1i8tgZM2aQnZ3NqlWrWLJkCWXLlqVChQpqxwJg8ODBHD58mOrVq/PHH38wdOhQs1mDyhKUKlWKbt268fnnn6sdhaNHjzJ//nzWr1/P5cuXGTRoEHPmzFHtWcmdO3eSnZ3NokWLCAoKMhzPzc1l2bJldOnSRZVc1kaKmBVp2bKlYSjvvn372LBhA+7u7mrHYuvWrVy9epXt27czePBgHB0d8fHxMYuRdvBg/sR27dqpHcNiPPoQu6Io/Prrr0YLd6pl5syZzJo1C4C6deuyfPlyPvroI7Zs2aJKnszMTH766ScyMzONnpnUarWMGDFClUzWSKadsiJ6vZ6NGzcaVrZt3bo1ffv2NYtfMAB3795l//79rFy5kjt37rBnzx61I4kCGDt2rNF+xYoV6devn9E6Xmro3r07O3fuNDrm4+NDZGSkSokeiImJoXXr1qpmsGbm8dtNFIl79+6h0+lYtGgRSUlJrF+/npycHNWL2N69e4mKiuL06dN06tSJ0NBQVafDEoUzY8YMcnJyuHz5Mjqdjvr166v+bwwetL7mzJmDj48PGo2G7du3m8XzaxUqVCAoKCjPys5qL9ZpLaQlZkXee+89GjZsyIgRI7hz5w5ffPEFly5dYvHixarmGjp0KD4+PnTo0IFSpUqpmkUU3tmzZwkKCsLR0RG9Xk9qaipLly6ladOmquZKT09n4cKFHD9+HFtbW5o3b05QUBDPPPOMqrm8vb3p27dvnkmmW7ZsqWIq6yFFzIr07NmTbdu2GR0zh+4UYV1ef/11xo4dayhap06dYurUqWzevFnlZA+6rK9du0aDBg24f/8+ZcuWVTsS//d//8emTZvUjmG1zOeJQFFoGo2GhIQEw/7FixfNoptHWJe7d+8atbpefPFFsrKyVEz0QExMDD4+PnzwwQekpaXRqVMns1hc1MPDg2+++YbLly/z+++/GzZRNOQ3nBUZPXo0b731Fi4uLsCDmc9nz56tciphbSpUqMC+fft45ZVXgAf3PB0dHdUNBXzyySesXbuWQYMGUaVKFcLCwvjwww/x8PBQNdfDnpBHl/yRJWKKjhQxK9KmTRsOHjzIL7/8gq2tLXXr1jWLlYCFdZkyZQrBwcGEhIQA4Orqypw5c1RO9WB0rpOTk2H/ueeeUzHNX8xtiRhrI0XMivz222+sWbMmzygoc5icVVi+gIAAw8CE0qVLU7NmTRRFoUyZMkycOFH10XZVq1bl4MGDaDQaMjIyCAsLU21V50elp6czZ84crl27xqJFi5g1axZjx47FwcFB7WhWQYqYFRk+fDjNmzc3u6UohHUYOnSo2hH+0eTJk5k2bRp//PEHr776Kq1atWLy5Mlqx2L8+PG0bduW2NhYypYti7OzM6NGjWL58uVqR7MKMjrRivj6+hIeHq52DCFUdevWLbO4R/eQn58fW7dupVevXobZTvIbSSwKRkYnWpGXX36ZAwcOkJ2drXYUIZ66uLg4unbtSq9evUhKSuLVV1/l3LlzasdCq9Vy+/ZtQ+/IlStXzGqpGEsnLTEr4uHhQWpqqtExc1iKQoin4c0332Ty5MmMHDmSiIgIfvjhB+bPn6/682uHDx9m3rx5/PHHH7z88sucOnWK6dOn07FjR1VzWQu5J2ZFzOGZGCHUcu/ePerVq2fYb9u2rWFCYDW1a9eOF154gdjYWHQ6HZMnT6ZKlSpqx7IaUsSsSFpaGtu2bSMzMxNFUdDr9SQmJsqzYqJEcHR0JD4+3tBtt23bNrNY8ictLY0dO3aQnp4OYOgZkYUxi4YUMSsyfPhwqlWrxqlTp3jllVf49ttvadKkidqxhHgqJk2axOjRo/n1119p3rw5tWvXNovn1wYNGkSDBg2oUaOG2lGsktwTsyJdu3Zl9+7dzJo1i65du1KrVi0GDBggo6BEiZKUlIRer6datWpqRwHA399ftTXNSgJpiVmRh10nderUIT4+nqZNmyJ/o4iSIj4+no8++oikpCQURaFu3brMmjWL2rVrq5rrlVdeYdOmTbi7uxuttG4OD2JbAyliVsTd3Z2goCDDHIrnzp0zi1m8hXgaxo0bx4gRI+jUqRPwYE7HsWPHsnbtWlVz3b17l+nTp1OxYkXDMZk7sehIEbMCDx+grFOnDq6urhw/fpzXX38djUYj/fCixFAUxVDAAF599VWWLl2qYqIHDh48SExMDKVLl1Y7ilWSImYFjh49CsD169e5evUq7du3R6vV8v3335vNJKhCFLc2bdqwdOlS+vbti1arZefOndSrV8+w7Ila3Xc1atQgPT1dilgxkYEdViQgIICFCxdSqVIl4MHEo0OGDGHNmjUqJxOi+Hl6eqLRaFAUxTDM/uGvNzW779566y1iY2OpX7++0crmak+YbC2kJWZFkpOTjeaMK1OmDCkpKeoFEuIpmj9/PidPnuS///0v7733HufOnWP27Nl06NBB1Vzvvfeeqp9v7aSIWZGOHTsycOBAunTpgqIo7Nq1i27duqkdS4inYtq0aQQFBbFnzx5Kly5NREQEgYGBqhcxWVGieEkRsyJjx44lOjqaY8eOodFoeOutt+jcubPasYR4KvR6PR4eHowcOZIuXbpQrVo1dDqd2rFYtGiR4evc3FwSEhJo3rw5LVq0UDGV9ZAiZmW8vLzw8vJSO4YQT12ZMmX46quvOHr0KBMmTODrr7+mXLlyasfim2++Mdq/fv26LFRbhGQ9ACGEVZg7dy53795l0aJFVKhQgaSkJObNm6d2rDxcXV25dOmS2jGshoxOFEKIYjR27Fij/YsXL1K1alWjbkZRcFLEhBCiGD262rpGo6FixYq0bt0aOzs7FVNZD7knJoQQxWj79u2sWLFC7RhWS+6JCSFEMbp//z5//PGH2jGslrTEhBCiGN28eRNPT08qV66Mvb29YUYRmQC4aMg9MSGEKEa//fZbvsdlcu6iId2JQghRjGbOnEmNGjWMtnHjxqkdy2pId6IQQhSDwMBA4uLiSE5ONpo5Jzc312xWnbYG0p0ohBDF4M6dO9y6dYtp06YRGhpqOG5ra0vlypWxtZU2RFGQIiaEEMUoOzubS5cu0ahRI6Kiojh//jyDBg0yLJkkCkfuiQkhRDEKDg4mKiqK06dPs3jxYsqXL59nFg9RcFLEhBCiGCUmJhIcHMyePXvo3bs3Q4YMITU1Ve1YVkOKmBBCFCOdTkdaWhr79u2jY8eOpKSkkJWVpXYsqyF3FoUQohi9/fbb9OnTB09PTxo0aICXlxfDhg1TO5bVkIEdQgjxFOl0OrRardoxrIa0xIQQohgdPnyYBQsWkJ6ezqNtBpl2qmhIS0wIIYqRl5cXY8aMoX79+mg0GsNxmXaqaEhLTAghilHFihXp1KmT2jGslrTEhBCiGM2ZM4fc3FzatWuHvb294XiLFi1UTGU9pCUmhBDFKDY2Fo1GQ1xcnNHxr7/+WqVE1kWeExNCiGIwfvx4w9eKohhtouhIS0wIIYpB3759ARg6dKjKSayb3BMTQghhsaQ7UQghhMWSIiaEEMJiSRETQghhsaSICSGEsFhSxIQQQlis/wdX50sQ5SoRmwAAAABJRU5ErkJggg==",
+      "text/plain": [
+       "<Figure size 432x288 with 2 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "sns.heatmap(df.corr(), cmap = \"coolwarm\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "id                   object\n",
+       "genre                object\n",
+       "track_name           object\n",
+       "artist_name          object\n",
+       "danceability        float64\n",
+       "valence             float64\n",
+       "energy              float64\n",
+       "tempo               float64\n",
+       "loudness            float64\n",
+       "speechiness         float64\n",
+       "instrumentalness    float64\n",
+       "artists_song         object\n",
+       "clusters              int64\n",
+       "dtype: object"
+      ]
+     },
+     "execution_count": 33,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'acoustic'"
+      ]
+     },
+     "execution_count": 35,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['genre'].values[0]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'Jason Walker'"
+      ]
+     },
+     "execution_count": 40,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['artist_name'].values[0]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.dropna(inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Dropping unspecified artists \n",
+    "df = df[df[\"artist_name\"] != \"['Unspecified']\"]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Filter out speeches, comedy routines, poems, etc.\n",
+    "# .66 as per suggested by Spotify\n",
+    "df = df[df[\"speechiness\"] < 0.66]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Preprocessing"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Are all songs unique:  True\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Drop duplicates\n",
+    "df.drop_duplicates(subset = \"id\", keep = \"first\", inplace = True)\n",
+    "\n",
+    "# Drop song duplicates\n",
+    "def drop_duplicates(df):\n",
+    "    df['artists_song'] = df.apply(lambda row: row['artist_name']+row['track_name'],axis = 1)\n",
+    "    return df.drop_duplicates('artists_song')\n",
+    "\n",
+    "track_df = drop_duplicates(df)\n",
+    "print(\"Are all songs unique: \",len(pd.unique(track_df.artists_song))==len(track_df))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0    [acoustic]\n",
+       "1    [acoustic]\n",
+       "2    [acoustic]\n",
+       "3    [acoustic]\n",
+       "4    [acoustic]\n",
+       "Name: genres_list, dtype: object"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Converting genres columns into a list\n",
+    "def genre_preprocess(df):\n",
+    "    '''\n",
+    "    Preprocess the genre data\n",
+    "    '''\n",
+    "    df['genres_list'] = df['genre'].apply(lambda x: x.split(\" \"))\n",
+    "    return df\n",
+    "track_df = genre_preprocess(track_df)\n",
+    "track_df['genres_list'].head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Preporcessing new playlist\n",
+    "def playlist_preprocess(df):\n",
+    "    '''\n",
+    "    Preprocess imported playlist\n",
+    "    '''\n",
+    "    df = drop_duplicates(df)\n",
+    "    df = select_cols(df)\n",
+    "    df = genre_preprocess(df)\n",
+    "\n",
+    "    return df"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Feature Engineering"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from textblob import TextBlob\n",
+    "\n",
+    "# Preparing for sentiment analysis, will devide by subjectivity (0,1) v polarity (-1,1)\n",
+    "def getSubjectivity(text):\n",
+    "  '''\n",
+    "  Getting the Subjectivity using TextBlob\n",
+    "  '''\n",
+    "  return TextBlob(text).sentiment.subjectivity\n",
+    "\n",
+    "def getPolarity(text):\n",
+    "  '''\n",
+    "  Getting the Polarity using TextBlob\n",
+    "  '''\n",
+    "  return TextBlob(text).sentiment.polarity\n",
+    "\n",
+    "def getAnalysis(score, task=\"polarity\"):\n",
+    "  '''\n",
+    "  Categorizing the Polarity & Subjectivity score\n",
+    "  '''\n",
+    "  if task == \"subjectivity\":\n",
+    "    if score < 1/3:\n",
+    "      return \"low\"\n",
+    "    elif score > 1/3:\n",
+    "      return \"high\"\n",
+    "    else:\n",
+    "      return \"medium\"\n",
+    "  else:\n",
+    "    if score < 0:\n",
+    "      return 'Negative'\n",
+    "    elif score == 0:\n",
+    "      return 'Neutral'\n",
+    "    else:\n",
+    "      return 'Positive'\n",
+    "\n",
+    "def sentiment_analysis(df, text_col):\n",
+    "\n",
+    "  df['subjectivity'] = df[text_col].apply(getSubjectivity).apply(lambda x: getAnalysis(x,\"subjectivity\"))\n",
+    "  df['polarity'] = df[text_col].apply(getPolarity).apply(getAnalysis)\n",
+    "  return df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>id</th>\n",
+       "      <th>genre</th>\n",
+       "      <th>track_name</th>\n",
+       "      <th>artist_name</th>\n",
+       "      <th>danceability</th>\n",
+       "      <th>valence</th>\n",
+       "      <th>energy</th>\n",
+       "      <th>tempo</th>\n",
+       "      <th>loudness</th>\n",
+       "      <th>speechiness</th>\n",
+       "      <th>instrumentalness</th>\n",
+       "      <th>artists_song</th>\n",
+       "      <th>genres_list</th>\n",
+       "      <th>subjectivity</th>\n",
+       "      <th>polarity</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>6wN5nWLgjEGmPwozDh2jwM</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Kiss Me</td>\n",
+       "      <td>Jason Walker</td>\n",
+       "      <td>0.429</td>\n",
+       "      <td>0.330</td>\n",
+       "      <td>0.184</td>\n",
+       "      <td>77.567</td>\n",
+       "      <td>-9.731</td>\n",
+       "      <td>0.0299</td>\n",
+       "      <td>0.000000</td>\n",
+       "      <td>Jason WalkerKiss Me</td>\n",
+       "      <td>[acoustic]</td>\n",
+       "      <td>low</td>\n",
+       "      <td>Neutral</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>5z1vCywwTJAP8qSkGJymFY</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Creep - Live</td>\n",
+       "      <td>Korn</td>\n",
+       "      <td>0.484</td>\n",
+       "      <td>0.236</td>\n",
+       "      <td>0.534</td>\n",
+       "      <td>104.023</td>\n",
+       "      <td>-8.156</td>\n",
+       "      <td>0.1510</td>\n",
+       "      <td>0.000000</td>\n",
+       "      <td>KornCreep - Live</td>\n",
+       "      <td>[acoustic]</td>\n",
+       "      <td>high</td>\n",
+       "      <td>Positive</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1ZmbLKxfrWh2ejFjiZxZPW</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Better Off - Live From Spotify London</td>\n",
+       "      <td>HAIM</td>\n",
+       "      <td>0.510</td>\n",
+       "      <td>0.419</td>\n",
+       "      <td>0.702</td>\n",
+       "      <td>119.296</td>\n",
+       "      <td>-10.475</td>\n",
+       "      <td>0.0296</td>\n",
+       "      <td>0.003800</td>\n",
+       "      <td>HAIMBetter Off - Live From Spotify London</td>\n",
+       "      <td>[acoustic]</td>\n",
+       "      <td>high</td>\n",
+       "      <td>Positive</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>7noCkklUhEAoj8GJkbAuHq</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>All of Me</td>\n",
+       "      <td>Boyce Avenue</td>\n",
+       "      <td>0.606</td>\n",
+       "      <td>0.308</td>\n",
+       "      <td>0.209</td>\n",
+       "      <td>125.969</td>\n",
+       "      <td>-10.273</td>\n",
+       "      <td>0.0418</td>\n",
+       "      <td>0.000000</td>\n",
+       "      <td>Boyce AvenueAll of Me</td>\n",
+       "      <td>[acoustic]</td>\n",
+       "      <td>low</td>\n",
+       "      <td>Neutral</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>6wDKGtbPpF9xPMRv7bswQN</td>\n",
+       "      <td>acoustic</td>\n",
+       "      <td>Dead Sea</td>\n",
+       "      <td>The Lumineers</td>\n",
+       "      <td>0.713</td>\n",
+       "      <td>0.472</td>\n",
+       "      <td>0.319</td>\n",
+       "      <td>94.043</td>\n",
+       "      <td>-11.077</td>\n",
+       "      <td>0.0289</td>\n",
+       "      <td>0.000079</td>\n",
+       "      <td>The LumineersDead Sea</td>\n",
+       "      <td>[acoustic]</td>\n",
+       "      <td>high</td>\n",
+       "      <td>Negative</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                       id     genre                             track_name  \\\n",
+       "0  6wN5nWLgjEGmPwozDh2jwM  acoustic                                Kiss Me   \n",
+       "1  5z1vCywwTJAP8qSkGJymFY  acoustic                           Creep - Live   \n",
+       "2  1ZmbLKxfrWh2ejFjiZxZPW  acoustic  Better Off - Live From Spotify London   \n",
+       "3  7noCkklUhEAoj8GJkbAuHq  acoustic                              All of Me   \n",
+       "4  6wDKGtbPpF9xPMRv7bswQN  acoustic                               Dead Sea   \n",
+       "\n",
+       "     artist_name  danceability  valence  energy    tempo  loudness  \\\n",
+       "0   Jason Walker         0.429    0.330   0.184   77.567    -9.731   \n",
+       "1           Korn         0.484    0.236   0.534  104.023    -8.156   \n",
+       "2           HAIM         0.510    0.419   0.702  119.296   -10.475   \n",
+       "3   Boyce Avenue         0.606    0.308   0.209  125.969   -10.273   \n",
+       "4  The Lumineers         0.713    0.472   0.319   94.043   -11.077   \n",
+       "\n",
+       "   speechiness  instrumentalness                               artists_song  \\\n",
+       "0       0.0299          0.000000                        Jason WalkerKiss Me   \n",
+       "1       0.1510          0.000000                           KornCreep - Live   \n",
+       "2       0.0296          0.003800  HAIMBetter Off - Live From Spotify London   \n",
+       "3       0.0418          0.000000                      Boyce AvenueAll of Me   \n",
+       "4       0.0289          0.000079                      The LumineersDead Sea   \n",
+       "\n",
+       "  genres_list subjectivity  polarity  \n",
+       "0  [acoustic]          low   Neutral  \n",
+       "1  [acoustic]         high  Positive  \n",
+       "2  [acoustic]         high  Positive  \n",
+       "3  [acoustic]          low   Neutral  \n",
+       "4  [acoustic]         high  Negative  "
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "sentiment = sentiment_analysis(track_df, \"track_name\")\n",
+    "sentiment.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## One Hot Encoding"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def ohe_prep(df, column, new_name): \n",
+    "    tf_df = pd.get_dummies(df[column])\n",
+    "    feature_names = tf_df.columns\n",
+    "    tf_df.columns = [new_name + \"|\" + str(i) for i in feature_names]\n",
+    "    tf_df.reset_index(drop = True, inplace = True)    \n",
+    "    return tf_df"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "subject|high      0\n",
+       "subject|low       1\n",
+       "subject|medium    0\n",
+       "Name: 0, dtype: uint8"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# One-hot encoding for the subjectivity \n",
+    "subject_ohe = ohe_prep(sentiment, 'subjectivity','subject')\n",
+    "subject_ohe.iloc[0]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## TF-IDF\n",
+    "\n",
+    "To address multiple genres"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "genre|acoustic       1.0\n",
+       "genre|afrobeat       0.0\n",
+       "genre|age            0.0\n",
+       "genre|alt            0.0\n",
+       "genre|alternative    0.0\n",
+       "                    ... \n",
+       "genre|trip           0.0\n",
+       "genre|tunes          0.0\n",
+       "genre|turkish        0.0\n",
+       "genre|work           0.0\n",
+       "genre|world          0.0\n",
+       "Name: 0, Length: 129, dtype: float64"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "from sklearn.feature_extraction.text import TfidfVectorizer\n",
+    "\n",
+    "tfidf = TfidfVectorizer()\n",
+    "tfidf_matrix =  tfidf.fit_transform(track_df['genres_list'].apply(lambda x: \" \".join(x)))\n",
+    "genre_df = pd.DataFrame(tfidf_matrix.toarray())\n",
+    "genre_df.columns = ['genre' + \"|\" + i for i in tfidf.get_feature_names()]\n",
+    "#genre_df.drop(columns='genre|unknown')\n",
+    "genre_df.reset_index(drop = True, inplace=True)\n",
+    "genre_df.iloc[0]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# OPTICS Clustering"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.cluster import OPTICS"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df_features = df.filter([\n",
+    "    \"accousticness\",\n",
+    "    \"danceability\",\n",
+    "    \"energy\",\n",
+    "    \"instramentalness\",\n",
+    "    \"loudness\",\n",
+    "    \"mode\",\n",
+    "    \"tempo\",\n",
+    "    \"popularity\",\n",
+    "    \"valence\"\n",
+    "])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# OPTICS Clustering is based on eucledian clusterin which is highly susptible to skewing based on high dimensionality. \n",
+    "# To address this, the data should be scaled\n",
+    "\n",
+    "from sklearn.preprocessing import StandardScaler\n",
+    "# initialize scaler\n",
+    "scaler = StandardScaler()\n",
+    "# Scaled features\n",
+    "scaler.fit(df_features)\n",
+    "df_scaled_features = scaler.transform(df_features)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Initialize and run OPTICS\n",
+    "# min_samples indicated the number of songs required to make a playlist\n",
+    "ops_cluster = OPTICS(min_samples = 15)\n",
+    "ops_cluster.fit(df_scaled_features)\n",
+    "# Add labels to dataframe\n",
+    "df[\"clusters\"] = ops_cluster.labels_"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Sample code to create OPTICS Clustering in Python from OPTICS documentation\n",
+    "# Creating the sample data for clustering\n",
+    "from sklearn.datasets import make_blobs\n",
+    "import matplotlib.pyplot as plt\n",
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    " \n",
+    "# create sample data for clustering\n",
+    "SampleData = make_blobs(n_samples=100, n_features=2, centers=2, cluster_std=1.5, random_state=40)\n",
+    " \n",
+    "#create np array for data points\n",
+    "X = SampleData&#91;0]\n",
+    "y = SampleData&#91;1]\n",
+    " \n",
+    "# Creating a Data Frame to represent the data with labels\n",
+    "ClusterData=pd.DataFrame(list(zip(X&#91;:,0],X&#91;:,1],y)), columns=&#91;'X1','X2','ClusterID'])\n",
+    "print(ClusterData.head())\n",
+    " \n",
+    "# create scatter plot to visualize the data\n",
+    "%matplotlib inline\n",
+    "plt.scatter(ClusterData&#91;'X1'], ClusterData&#91;'X2'], c=ClusterData&#91;'ClusterID'])\n",
+    " \n",
+    "##################################################################################\n",
+    "# This function is not present in python version 3.6\n",
+    "# Other option is pyclustering.cluster.optics but its not neat\n",
+    "from sklearn.cluster import OPTICS\n",
+    "op = OPTICS(min_samples=40, xi=0.02, min_cluster_size=0.1)\n",
+    " \n",
+    "# Generating cluster id for each row using DBSCAN algorithm\n",
+    "ClusterData&#91;'PredictedClusterID']=op.fit_predict(X)\n",
+    "print(ClusterData.head())\n",
+    " \n",
+    "# Plotting the predicted clusters\n",
+    "plt.scatter(ClusterData&#91;'X1'], ClusterData&#91;'X2'], c=ClusterData&#91;'PredictedClusterID'])"
+   ]
+  }
+ ],
+ "metadata": {
+  "interpreter": {
+   "hash": "9e3cdda789d8921ed1a452da3f8580e49c9e264d5fd657bccf4be8b752e279e9"
+  },
+  "kernelspec": {
+   "display_name": "Python (learn-env)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

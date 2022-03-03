@@ -1,0 +1,48 @@
+id,genre,track_name,artist_name,danceability,valence,energy,tempo,loudness,speechiness,instrumentalness
+2rgqPSIRAfaO2MGo9smdSX,children,Dancing Queen,ABBA,0.545,0.162,0.675,124.97,-7.596,0.0323,0.000263
+2TjNlK2tNBxF8C8RIaK9Gb,disco,Gimme! Gimme! Gimme! (A Man After Midnight),ABBA,0.639,0.562,0.869,133.033,-6.438,0.0339,0
+22NN4BS1AlqVbyKIWExgON,groove,Mamma Mia,ABBA,0.431,0.19,0.723,130.141,-8.103,0.0254,0
+2ATDkfqprlNNe9mYWodgdc,groove,Dancing Queen,ABBA,0.902,0.857,0.839,118.485,-7.364,0.0367,2.72E-06
+6vQN2a9QSgWcm74KEZYfDL,groove,Take A Chance On Me,ABBA,0.522,0.199,0.441,130.133,-9.843,0.0712,0.0294
+1DWbTRHEL2x9sZmdagh2Su,acoustic,Hometown Glory (Live at Hotel Cafe),Adele,0.484,0.531,0.713,84.451,-15.23,0.0393,0.466
+6QPKYGnAW9QozVz2dSWqRg,british,Someone Like You,Adele,0.674,0.364,0.834,140.104,-6.133,0.105,0
+6MFsT6EQiCoYDuXsIqIdUn,british,Tired,Adele,0.321,0.718,0.933,166.53,-5.176,0.0439,0
+48s4feNgV243gbAGTTBIrc,british,Don't You Remember,Adele,0.733,0.9,0.696,141.528,-4.129,0.0297,3.27E-05
+0ENSn4fwAbCGeFGVUbXEU3,new-release,Hello,Adele,0.675,0.478,0.459,120.053,-20.345,0.0734,0.00135
+6QPKYGnAW9QozVz2dSWqRg,piano,Someone Like You,Adele,0.455,0.104,0.0254,131.983,-4.969,0.211,0
+0p6GeAWS4VCZddxNbBtEss,piano,Hometown Glory,Adele,0.346,0.339,0.089,144.536,-4.961,0.0406,0
+0mqTcM8kuu2IYPotMt7AzS,rainy-day,Make You Feel My Love,Adele,0.794,0.862,0.811,116.047,-17.337,0.0366,3.51E-05
+0ZUHoyKB4dPqXG7MGvnQGm,sad,One and Only,Adele,0.418,0.149,0.403,105.801,-5.373,0.0408,4.72E-06
+0ZUHoyKB4dPqXG7MGvnQGm,singer-songwriter,One and Only,Adele,0.475,0.495,0.251,107.071,-7.589,0.0247,0
+0zAbTI9UGhiIhgVasVuVoh,singer-songwriter,Crazy for You,Adele,0.647,0.486,0.41,88.031,-6.933,0.103,0
+48s4feNgV243gbAGTTBIrc,sleep,Don't You Remember,Adele,0.387,0.382,0.442,169.481,-7.73,0.0292,0.677
+7qrtGo6eg8VyKIUMNjv99Q,metalcore,"Grow Up, Peter Pan",Adept,0.2,0.116,0.977,142.92,-8.115,0.0341,0.3
+3YETBiTTIuVCZB13OYXiRj,metalcore,The Ivory Tower,Adept,0.883,0.0669,0.419,125.004,-8.129,0.0927,0.774
+5MXS9bDfipm1CsCrGXQ1Ud,opera,Por Ti Volare (Con Te Partiro) - Spanish Version,Andrea Bocelli,0.335,0.304,0.173,84.749,-18.999,0.0515,2.41E-06
+6sYiwy6pPfUj15ufJD90n9,opera,Because We Believe,Andrea Bocelli,0.34,0.0872,0.0842,101.486,-31.314,0.0469,3.25E-05
+1bQRZwoCs8eWmDeudL0xb5,opera,Bellissime Stelle,Andrea Bocelli,0.2,0.165,0.308,88.629,-15.667,0.0526,0
+67nJHwnhdIoJnHumRshqv1,opera,"Turandot / Act 3: ""Nessun dorma!""",Andrea Bocelli,0.363,0.378,0.301,113.342,-16.469,0.0604,0.000812
+3Y5mEE48eMjG3irhnHETy2,opera,Roma Nun Fa' La Stupida Stasera,Andrea Bocelli,0.27,0.143,0.271,97.388,-19.425,0.0463,0
+3vzWW3FZpxmGQidRMObLUB,opera,Love Me Tender,Andrea Bocelli,0.261,0.235,0.199,164.399,-11.308,0.0351,4.95E-05
+6qcWxvo12VcPAr1t4Syy7K,opera,"More (Ti Guarderò Nel Cuore) - Live At Central Park, New York/2011",Andrea Bocelli,0.158,0.129,0.426,176.005,-8.266,0.0674,0
+7BFYBSroOTNTkFFDuJ6BmV,opera,Canto Della Terra,Andrea Bocelli,0.255,0.131,0.162,124.082,-6.856,0.0391,0
+4aLcGMxwFtcZRpl7NDtNW2,piano,Time To Say Goodbye,Andrea Bocelli,0.391,0.83,0.223,96.283,-4.038,0.0567,4.21E-06
+0UyEBcNXIHHFCtIeT4wLky,show-tunes,Wishing You Were Somehow Here Again - Live,Andrew Lloyd Webber,0.342,0.232,0.0368,142.505,-15.28,0.265,1.11E-05
+1QlUp3AOHooFtbCk58x18w,show-tunes,Wandering Child .../Bravo Bravo - Live At The Royal Albert Hall/2011,Andrew Lloyd Webber,0.425,0.396,0.28,70.706,-12.31,0.0405,0.0013
+1hXo2OJNfdQSUvFscMIPfD,show-tunes,"Gus: The Theatre Cat - UK 1981 / Musical ""Cats""",Andrew Lloyd Webber,0.579,0.447,0.28,129.205,-12.203,0.037,1.16E-06
+0S06208WWNQ5oxmBuoImMj,show-tunes,Grizabella,Andrew Lloyd Webber,0.381,0.19,0.3,57.019,-12.821,0.033,7.86E-05
+6xZfLRpZgBI92ZWT2wklH7,show-tunes,The Overture,Andrew Lloyd Webber,0.31,0.32,0.0637,59.23,-6.814,0.0308,0.00132
+7ArHv3Ry2dWHFwQ8b5BoON,alternative,No. 1 Party Anthem,Arctic Monkeys,0.476,0.557,0.822,115.016,-7.423,0.033,0.143
+0o3v9K11uvV9YQHfiuerB6,alternative,Brianstorm,Arctic Monkeys,0.293,0.247,0.823,119.348,-9.258,0.0327,2.09E-06
+2LlvrdnLa3XbB1b4jYuCnl,alternative,R U Mine?,Arctic Monkeys,0.777,0.705,0.642,106.994,-15.187,0.0333,0.804
+3jfr0TF6DQcOLat8gGn7E2,alternative,Do I Wanna Know?,Arctic Monkeys,0.531,0.726,0.542,171.878,-13.337,0.0853,0.621
+6sX68MHBh0nqvHCr1uDTC1,british,Riot Van,Arctic Monkeys,0.279,0.49,0.664,104.56,-8.895,0.0364,0.0349
+3nCkURI30dSOA2ibF493nf,british,One For The Road,Arctic Monkeys,0.432,0.567,0.868,156.128,-7.072,0.0375,0.00165
+5BITMVIbatbnwwIF9Rfgcy,british,Pretty Visitors,Arctic Monkeys,0.801,0.552,0.663,96.992,-7.665,0.0718,0.00419
+30uJNlHIjfDeE4vr8g9fpf,british,Snap Out Of It,Arctic Monkeys,0.441,0.971,0.684,199.001,-9.771,0.0482,0.00321
+7vhlwjoNX2gsC4YF1wnUmX,british,From The Ritz To The Rubble,Arctic Monkeys,0.564,0.894,0.665,160.437,-7.249,0.0376,0
+3jfr0TF6DQcOLat8gGn7E2,chill,Do I Wanna Know?,Arctic Monkeys,0.871,0.707,0.472,124.04,-18.254,0.0362,0.024
+2v8X6L6j0kbUPXDZwtXvXU,chill,Why'd You Only Call Me When You're High?,Arctic Monkeys,0.787,0.65,0.655,102.485,-26.789,0.0387,0.957
+3jfr0TF6DQcOLat8gGn7E2,garage,Do I Wanna Know?,Arctic Monkeys,0.641,0.847,0.922,146.078,-4.999,0.0871,0
+2LlvrdnLa3XbB1b4jYuCnl,guitar,R U Mine?,Arctic Monkeys,0.437,0.239,0.572,124.172,-3.877,0.0316,4.34E-05
+4eACecQhCB5NxFfGjfmIXI,indie-pop,R U Mine?,Arctic Monkeys,0.546,0.678,0.911,145.205,-3.249,0.0452,0.0777
