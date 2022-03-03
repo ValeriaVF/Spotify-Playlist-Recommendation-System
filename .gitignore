@@ -2,7 +2,8 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-authorization.py
+API/authorization.py
+Notebooks/authorization.py
 
 *$py.class
 
