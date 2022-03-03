@@ -2,8 +2,8 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
-API/authorization.py
-Notebooks/authorization.py
+Spotify-Playlist-Recommendation-System/API/authorization.py
+Spotify-Playlist-Recommendation-System/Notebooks/authorization.py
 
 *$py.class
 
